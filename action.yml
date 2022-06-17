@@ -13,5 +13,5 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - run: php ${{ github.action_path }}/run.php ${{ inputs.output_file }}
+    - run: php ${{ github.action_path }}/run.php "${{ inputs.output_file }}"
       shell: bash
