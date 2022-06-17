@@ -9,7 +9,7 @@ GitHub action to generate a file with [PHP](https://php.net) project classes lis
 
 To use this action in your project, create workflow in your project similar to this code (Note: some parts and arguments needs to be altered):
 ```yaml
-name: Automatic update project documentation
+name: Generate PHP project class list as artifact
 
 on:
   push:
