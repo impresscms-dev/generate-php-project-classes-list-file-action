@@ -1,0 +1,17 @@
+name: 'Generate PHP project classes list file'
+description: 'GitHub action to generate a file with PHP project classes list (works only with composer projects)'
+
+branding:
+  icon: list
+  color: blue
+  
+inputs:
+  output_file:
+    description: File where will be written classes list
+    required: true  
+
+runs:
+  using: 'composite'
+  steps:
+    - run: php ${{ github.action_path }}/run.php ${{ inputs.output_file }}
+      shell: bash
