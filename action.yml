@@ -13,5 +13,10 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - run: php ${{ github.action_path }}/run.php "${{ inputs.output_file }}"
+    - name: Dumping composer autoloader with optimization...
+      run: composer dumpautoload --optimize
+      shell: bash
+    
+    - name: Generating classes output list file...
+      run: php ${{ github.action_path }}/run.php "${{ inputs.output_file }}"
       shell: bash
