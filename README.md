@@ -34,7 +34,7 @@ jobs:
         run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
         
       - name: Getting PHP classes list...
-        uses: impresscms-dev/generate-php-project-classes-list-file-action@v1.0.0
+        uses: impresscms-dev/generate-php-project-classes-list-file-action@v0.1.1
         with:
           output_file: ./php-classes.lst
           
