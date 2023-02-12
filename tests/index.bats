@@ -6,7 +6,7 @@ setup_file() {
  export OUTPUT_FILE=classes.lst
 
  pushd "$TMP_PATH"  > /dev/null
-   git clone --no-tags --quiet git@github.com:imponeer/criteria.git .
+   git clone --no-tags --quiet https://github.com/imponeer/criteria.git .
 
    php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
    php composer-setup.php --quiet --install-dir=. --filename=composer
