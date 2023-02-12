@@ -6,10 +6,24 @@ on:
       - main
 
 jobs:
-            
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkouting code...
+        uses: actions/checkout@v3
+
+      - name: Setup BATS
+        uses: mig4/setup-bats@v1
+        with:
+          bats-version: 1.8.2
+
+      - name: Test
+        run: bats tests
+
   dependabot:
-#    needs: 
-#      - test
+    needs:
+      - test
     permissions:
       pull-requests: write
       contents: write
