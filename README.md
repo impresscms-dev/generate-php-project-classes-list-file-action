@@ -1,6 +1,4 @@
-[![License](https://img.shields.io/github/license/impresscms-dev/generate-php-project-classes-list-file-action.svg)](LICENSE)
-
-[![GitHub release](https://img.shields.io/github/release/impresscms-dev/generate-php-project-classes-list-file-action.svg)](https://github.com/impresscms-dev/generate-php-project-classes-list-file-action/releases)
+[![License](https://img.shields.io/github/license/impresscms-dev/generate-php-project-classes-list-file-action.svg)](LICENSE) [![GitHub release](https://img.shields.io/github/release/impresscms-dev/generate-php-project-classes-list-file-action.svg)](https://github.com/impresscms-dev/generate-php-project-classes-list-file-action/releases)
 
 # Generate PHP project classes list file action
 
