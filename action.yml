@@ -4,19 +4,16 @@ description: 'GitHub action to generate a file with PHP project classes list (wo
 branding:
   icon: list
   color: blue
-  
+
 inputs:
   output_file:
     description: File where will be written classes list
-    required: true  
+    required: true
+  project_path:
+    description: Path to the directory containing composer.json (default is current directory)
+    required: false
+    default: '.'
 
 runs:
-  using: 'composite'
-  steps:
-    - name: Dumping composer autoloader with optimization...
-      run: composer dumpautoload --optimize
-      shell: bash
-    
-    - name: Generating classes output list file...
-      run: php ${{ github.action_path }}/bin/run.php "${{ inputs.output_file }}"
-      shell: bash
+  using: 'node20'
+  main: 'dist/index.js'

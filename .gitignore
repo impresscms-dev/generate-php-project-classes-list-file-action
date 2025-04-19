@@ -1,1 +1,5 @@
 /.idea/
+/node_modules/
+/coverage/
+# Don't ignore dist folder for GitHub Actions
+# /dist/

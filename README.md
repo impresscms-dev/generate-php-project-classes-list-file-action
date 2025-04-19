@@ -2,7 +2,7 @@
 
 # Generate PHP project classes list file action
 
-GitHub action to generate a file with [PHP](https://php.net) project classes list (works only with [composer](https://getcomposer.org) projects)
+GitHub action to generate a file with [PHP](https://php.net) project classes list (works only with [composer](https://getcomposer.org) projects). Built with Node.js 20.
 
 ## Usage
 
@@ -18,39 +18,78 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkouting project code...
-        uses: actions/checkout@v2
-        
+        uses: actions/checkout@v4
+
       - name: Install PHP
         uses: shivammathur/setup-php@master
         with:
-          php-version: 8.1
+          php-version: 8.4
           extensions: curl, gd, pdo_mysql, json, mbstring, pcre, session
           ini-values: post_max_size=256M
           coverage: none
           tools: composer:v2
-          
+
       - name: Install Composer dependencies (with dev)
         run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
-        
+
       - name: Getting PHP classes list...
-        uses: impresscms-dev/generate-php-project-classes-list-file-action@v1
+        uses: impresscms-dev/generate-php-project-classes-list-file-action@v2
         with:
           output_file: ./php-classes.lst
-          
-      - uses: actions/upload-artifact@v3
+          # Optional: specify a different path if composer.json is not in the root
+          # project_path: ./src
+
+      - uses: actions/upload-artifact@v4
         with:
           name: my-artifact
           path: ./php-classes.lst
 ```
 
-## Arguments 
+## Arguments
 
 This action supports such arguments (used in `with` keyword):
-| Argument    | Required | Default value        | Description                       |
-|-------------|----------|----------------------|-----------------------------------|
-| output_file | Yes      |                      | File where to write classes list  |
+| Argument    | Required | Default value        | Description                                                |
+|-------------|----------|----------------------|------------------------------------------------------------|
+| output_file | Yes      |                      | File where to write classes list                           |
+| project_path | No       | .                    | Path to the directory containing composer.json             |
 
-## How to contribute? 
+## Development
+
+### Setup
+
+```bash
+# Install dependencies
+npm install
+
+# Pack the action
+npm run pack
+
+# Run tests
+npm test
+
+# Lint code (both source and tests)
+npm run lint
+
+# Fix lint issues (both source and tests)
+npm run lint:fix
+
+# Run all checks (lint, pack, test)
+npm run all
+```
+
+### Packaging
+
+This action uses [ncc](https://github.com/vercel/ncc) to compile the Node.js code and dependencies into a single file in the `dist/` folder. This allows the action to run quickly and reliably.
+
+After making changes to the code, you should run:
+
+```bash
+npm run pack
+```
+
+The `dist/` folder should be committed to the repository. This is a requirement for GitHub Actions so that users can run the action without having to build it themselves.
+
+## How to contribute?
 
 If you want to add some functionality or fix bugs, you can fork, change and create pull request. If you not sure how this works, try [interactive GitHub tutorial](https://skills.github.com).
 
