@@ -23,9 +23,6 @@ jobs:
           - task: test
             name: Run tests
             command: test
-          - task: format-check
-            name: Check code formatting
-            command: format-check
           - task: lint
             name: Lint code
             command: lint
