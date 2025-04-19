@@ -6,5 +6,7 @@ export default {
   coverageReporters: ['text', 'lcov'],
   verbose: true,
   testTimeout: 60000, // 60 seconds timeout for tests
-  transform: {}
+  transform: {
+    '\\.ejs$': '<rootDir>/build-tools/jest-ejs-transformer.cjs'
+  }
 };

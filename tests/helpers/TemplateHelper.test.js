@@ -1,6 +1,11 @@
 import { jest } from '@jest/globals';
-import { TemplateHelper } from '../../src/helpers/TemplateHelper.js';
 import mockFs from 'mock-fs';
+
+// Mock the template import
+jest.mock('../../templates/list.php.ejs', () => '<?php\n// Load the classmap file\n$classmapPath = \'<%= classmapPath %>\'\n$classmap = require($classmapPath);\n\n// Extract class names (keys from the classmap)\n$classes = array_keys($classmap);\n\n// Filter out any empty class names\n$classes = array_filter($classes, function($className) {\n    return !empty($className) && is_string($className);\n});\n\n// Output the class names, one per line\necho implode("\\n", $classes);\n?>', { virtual: true });
+
+// Import after mocking
+import { TemplateHelper } from '../../src/helpers/TemplateHelper.js';
 
 // Mock the URL module
 jest.mock('url', () => ({
