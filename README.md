@@ -1,27 +1,28 @@
 [![License](https://img.shields.io/github/license/impresscms-dev/generate-php-project-classes-list-file-action.svg)](LICENSE) [![GitHub release](https://img.shields.io/github/release/impresscms-dev/generate-php-project-classes-list-file-action.svg)](https://github.com/impresscms-dev/generate-php-project-classes-list-file-action/releases)
 
-# Generate PHP project classes list file action
+# Generate PHP Project Classes List File Action
 
-GitHub action to generate a file with [PHP](https://php.net) project classes list (works only with [composer](https://getcomposer.org) projects). Built with Node.js 20.
+A GitHub Action that generates a comprehensive list of classes in your [PHP](https://php.net) project. This action is designed to work with projects that use [Composer](https://getcomposer.org) for dependency management.
 
 ## Usage
 
-To use this action in your project, create workflow in your project similar to this code (Note: some parts and arguments needs to be altered):
+To integrate this action into your project, create a GitHub workflow file similar to the example below. You can customize the configuration to match your project's specific requirements:
 ```yaml
-name: Generate PHP project class list as artifact
+name: Generate PHP Class List
 
 on:
   push:
+    branches: [main]
 
 jobs:
-  get_php_classes_list:
+  generate-class-list:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkouting project code...
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install PHP
-        uses: shivammathur/setup-php@master
+      - name: Setup PHP environment
+        uses: shivammathur/setup-php@v2
         with:
           php-version: 8.4
           extensions: curl, gd, pdo_mysql, json, mbstring, pcre, session
@@ -29,68 +30,149 @@ jobs:
           coverage: none
           tools: composer:v2
 
-      - name: Install Composer dependencies (with dev)
-        run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+      - name: Install Composer dependencies
+        run: composer install --no-progress --prefer-dist --optimize-autoloader
 
-      - name: Getting PHP classes list...
+      - name: Generate PHP classes list
         uses: impresscms-dev/generate-php-project-classes-list-file-action@v2
         with:
           output_file: ./php-classes.lst
           # Optional: specify a different path if composer.json is not in the root
           # project_path: ./src
 
-      - uses: actions/upload-artifact@v4
+      - name: Upload classes list as artifact
+        uses: actions/upload-artifact@v4
         with:
-          name: my-artifact
+          name: php-classes-list
           path: ./php-classes.lst
 ```
 
-## Arguments
+## Prerequisites
 
-This action supports such arguments (used in `with` keyword):
-| Argument    | Required | Default value        | Description                                                |
-|-------------|----------|----------------------|------------------------------------------------------------|
-| output_file | Yes      |                      | File where to write classes list                           |
-| project_path | No       | .                    | Path to the directory containing composer.json             |
+Before using this action, ensure your workflow has:
+
+1. PHP installed and configured
+2. Composer setup and available
+
+The example workflow above demonstrates how to properly configure these prerequisites using the [`shivammathur/setup-php`](https://github.com/marketplace/actions/setup-php-action) action.
+
+## Configuration Options
+
+This action accepts the following parameters in the `with` section of your workflow:
+
+| Parameter    | Required | Default | Description                                           |
+|-------------|----------|---------|-------------------------------------------------------|
+| output_file | Yes      | -       | Destination file path for the generated classes list  |
+| project_path | No       | `.`     | Path to the directory containing your composer.json   |
+
+### Examples
+
+**Basic Usage:**
+
+Use this configuration when your `composer.json` file is located in the root directory of your repository. This is the most common setup for PHP projects.
+
+```yaml
+- name: Generate PHP classes list
+  uses: impresscms-dev/generate-php-project-classes-list-file-action@v2
+  with:
+    output_file: ./php-classes.lst
+```
+
+**With Custom Project Path:**
+
+Use this configuration when your PHP project is in a subdirectory or when you have multiple PHP projects in a monorepo structure. This allows you to specify exactly which project's classes should be listed.
+
+```yaml
+- name: Generate PHP classes list
+  uses: impresscms-dev/generate-php-project-classes-list-file-action@v2
+  with:
+    output_file: ./php-classes.lst
+    project_path: ./src
+```
+
+**Generating Multiple Class Lists:**
+
+For repositories with multiple PHP projects, you can run the action multiple times with different configurations to generate separate class lists for each project.
+
+```yaml
+- name: Generate main project classes list
+  uses: impresscms-dev/generate-php-project-classes-list-file-action@v2
+  with:
+    output_file: ./main-classes.lst
+    project_path: ./main
+
+- name: Generate API project classes list
+  uses: impresscms-dev/generate-php-project-classes-list-file-action@v2
+  with:
+    output_file: ./api-classes.lst
+    project_path: ./api
+```
 
 ## Development
 
-### Setup
+### Local Setup
+
+Follow these steps to set up and work with the development environment for this action:
+
+#### 1. Install Dependencies
+
+First, install all required npm packages:
 
 ```bash
-# Install dependencies
 npm install
+```
 
-# Pack the action
+#### 2. Build the Action
+
+Compile the source code using esbuild:
+
+```bash
 npm run pack
+```
 
-# Run tests
+This creates a bundled version of the action in the `dist/` directory. For GitHub Actions, this directory must be committed to the repository as it contains the executable code that runs when others use this action.
+
+Note: If you forget to update the `dist/` folder after making changes, don't worry - there's a CI workflow that automatically builds and updates it when pull requests are submitted.
+
+#### 3. Run Tests
+
+Execute the test suite to verify functionality:
+
+```bash
 npm test
+```
 
-# Lint code (both source and tests)
+#### 4. Code Quality
+
+Check code quality with ESLint:
+
+```bash
 npm run lint
+```
 
-# Fix lint issues (both source and tests)
+Automatically fix linting issues when possible:
+
+```bash
 npm run lint:fix
+```
 
-# Run all checks (lint, pack, test)
+#### 5. Complete Verification
+
+Run all checks (linting, building, and testing) in one command:
+
+```bash
 npm run all
 ```
 
-### Packaging
+This is particularly useful before submitting a pull request.
 
-This action uses [ncc](https://github.com/vercel/ncc) to compile the Node.js code and dependencies into a single file in the `dist/` folder. This allows the action to run quickly and reliably.
+## Contributing
 
-After making changes to the code, you should run:
+Contributions are welcome! To contribute to this project:
 
-```bash
-npm run pack
-```
+1. [Fork the repository](https://github.com/impresscms-dev/generate-php-project-classes-list-file-action/fork)
+2. Create a feature branch and implement your changes
+3. Ensure tests pass and code meets quality standards
+4. [Submit a pull request](https://github.com/impresscms-dev/generate-php-project-classes-list-file-action/compare)
 
-The `dist/` folder should be committed to the repository. This is a requirement for GitHub Actions so that users can run the action without having to build it themselves.
-
-## How to contribute?
-
-If you want to add some functionality or fix bugs, you can fork, change and create pull request. If you not sure how this works, try [interactive GitHub tutorial](https://skills.github.com).
-
-If you found any bug or have some questions, use [issues tab](https://github.com/impresscms-dev/generate-php-project-classes-list-file-action/issues) and write there your questions.
+For bug reports, questions, or feature requests, please use the [issues section](https://github.com/impresscms-dev/generate-php-project-classes-list-file-action/issues).
