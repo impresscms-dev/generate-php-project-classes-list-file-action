@@ -43,7 +43,7 @@ export class ComposerHelper {
       await fs.access(classmapPath);
       return true;
     } catch (error) {
-      throw new Error(`Could not find classmap at ${classmapPath}. Make sure you've run composer with the --optimize flag.`);
+      throw new Error(`Could not find classmap at ${classmapPath}. Make sure you've run composer with the --optimize flag. Internal error: ${error}`);
     }
   }
 }
