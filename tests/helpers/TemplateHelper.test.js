@@ -14,9 +14,9 @@ jest.mock('url', () => ({
 
 describe('TemplateHelper', () => {
   beforeEach(() => {
-    // Setup mock filesystem with the actual path structure
+    // Setup mock filesystem with a relative path structure
     mockFs({
-      '/home/mekdrop/IdeaProjects/generate-php-project-classes-list-file-action/templates': {
+      'templates': {
         'test.ejs': '<%= testVar %>'
       }
     });
