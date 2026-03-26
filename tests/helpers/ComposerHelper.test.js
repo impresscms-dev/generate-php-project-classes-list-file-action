@@ -1,5 +1,6 @@
 import { ComposerHelper } from '../../src/helpers/ComposerHelper.js';
 import mockFs from 'mock-fs';
+import path from 'path';
 
 describe('ComposerHelper', () => {
   beforeEach(() => {
@@ -24,7 +25,7 @@ describe('ComposerHelper', () => {
     test('returns the correct path', () => {
       const projectPath = '/test/project';
       const result = ComposerHelper.getClassmapPath(projectPath);
-      expect(result).toBe('/test/project/vendor/composer/autoload_classmap.php');
+      expect(result).toBe(path.join(projectPath, 'vendor/composer/autoload_classmap.php'));
     });
   });
 
