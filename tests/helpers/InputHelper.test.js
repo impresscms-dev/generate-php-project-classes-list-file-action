@@ -30,7 +30,7 @@ describe('InputHelper', () => {
     test('throws an error when output file is not provided', () => {
           process.env['INPUT_OUTPUT_FILE'] = '';
 
-          expect(() => InputHelper.outputFile).toThrowError();
+          expect(() => InputHelper.outputFile).toThrow();
         }
     );
   });
