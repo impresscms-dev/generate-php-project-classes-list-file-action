@@ -30,7 +30,7 @@
   "dependencies": {
     "@actions/core": "^3.0.1",
     "@actions/exec": "^3.0.0",
-    "ejs": "^5.0.1"
+    "ejs": "^5.0.2"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
